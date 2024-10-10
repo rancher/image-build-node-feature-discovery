@@ -10,6 +10,17 @@ else
         ARCH=$(UNAME_M)
 endif
 
+ifndef TARGET_PLATFORMS
+	ifeq ($(UNAME_M), x86_64)
+		TARGET_PLATFORMS:=linux/amd64
+	else ifeq ($(UNAME_M), aarch64)
+		TARGET_PLATFORMS:=linux/arm64
+	else 
+		TARGET_PLATFORMS:=linux/$(UNAME_M)
+	endif
+endif
+
+
 BUILD_META=-build$(shell date +%Y%m%d)
 ORG ?= rancher
 PKG ?= "github.com/kubernetes-sigs/node-feature-discovery"
@@ -36,6 +47,21 @@ image-build:
 		--tag $(ORG)/hardened-node-feature-discovery:$(TAG) \
 		--tag $(ORG)/hardened-node-feature-discovery:$(TAG)-$(ARCH) \
 		--load \
+		.
+
+.PHONY: push-image
+push-image:
+	docker buildx build \
+		--sbom=true \
+		--attest type=provenance,mode=max \
+		--platform=$(TARGET_PLATFORMS) \
+		--build-arg ARCH=$(ARCH) \
+		--build-arg PKG=$(PKG) \
+		--build-arg SRC=$(SRC) \
+		--build-arg TAG=$(TAG:$(BUILD_META)=) \
+		--tag $(ORG)/hardened-node-feature-discovery:$(TAG) \
+		--tag $(ORG)/hardened-node-feature-discovery:$(TAG)-$(ARCH) \
+		--push \
 		.
 
 .PHONY: image-push
