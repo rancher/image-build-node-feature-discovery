@@ -42,7 +42,7 @@ jobs:
         private-key: ${{ env.PRIVATE_KEY }}
 
     - name: Build and push image
-      uses: rancher/ecm-distro-tools/actions/publish-image@fe636541f874d109f776d951efa5c2beb81a0b2d
+      uses: rancher/ecm-distro-tools/actions/publish-image@db99f6f00564e68d7267f29a2a35e512ab20f362
       env:
         SRC: x-access-token:${{ steps.app-token.outputs.token }}@github.com/rancher/release-node-feature-discovery
       with:
