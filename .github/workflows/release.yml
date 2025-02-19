@@ -42,7 +42,7 @@ jobs:
         private-key: ${{ env.PRIVATE_KEY }}
 
     - name: Build and push image
-      uses: rancher/ecm-distro-tools/actions/publish-image@master
+      uses: rancher/ecm-distro-tools/actions/publish-image@fe636541f874d109f776d951efa5c2beb81a0b2d
       env:
         SRC: x-access-token:${{ steps.app-token.outputs.token }}@github.com/rancher/release-node-feature-discovery
       with:
@@ -55,3 +55,5 @@ jobs:
         prime-registry: ${{ env.PRIME_REGISTRY }}
         prime-username: ${{ env.PRIME_REGISTRY_USERNAME }}
         prime-password: ${{ env.PRIME_REGISTRY_PASSWORD }}
+
+        max-retries: 5
