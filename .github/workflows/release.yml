@@ -36,12 +36,11 @@ jobs:
     - name: Build and push image
       uses: rancher/ecm-distro-tools/actions/publish-image@master
       with:
-        image: rancher/hardened-node-feature-discovery
+        image: hardened-node-feature-discovery
         tag: ${{ github.event.release.tag_name }}
         public-repo: rancher
         public-username: ${{ env.DOCKER_USERNAME }}
         public-password: ${{ env.DOCKER_PASSWORD }}
-
 
         prime-repo: rancher
         prime-registry: ${{ env.PRIME_REGISTRY }}
